@@ -29,7 +29,7 @@ class Home extends Component {
           className={classes.container}>
           {list.map(el => (
             <Grid item
-              xs={6} sm={4} md={3}
+              xs={12} sm={6} md={4}
               className={classes.grid}
               key={el.id} >
               <PhoneSheet data={el} />
@@ -64,9 +64,11 @@ const styles = {
   }
 }
 
+
 const mapStateToProps = ({ phones }) => {
+  const { phoneList } = phones
   return {
-    list: phones.filteredList
+    list: phoneList
   }
 }
 

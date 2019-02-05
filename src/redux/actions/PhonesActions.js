@@ -5,53 +5,54 @@ import {
   LIST_FILTERED
 } from '../types'
 
-
-
 import config from '../../config'
 const { FonoApi } = config
 
 export const fetchPhoneList = () => dispatch => {
-  // const body = {
-  //   token: FonoApi.token,
-  //   limit: FonoApi.limit
-  // }
-
   dispatch({type: FETCHING_PHONE_LIST})
   fetch(FonoApi.url.fbStorage)
   .then(response => {
     return response.json()
   })
   .then(list => {
+    const brandSet = new Set()
+    const brands = []
+    const yearSet = new Set()
+    const years = []
+    list.forEach(el => {
+      if (!brandSet.has(el.brand)) {
+        brandSet.add(el.brand)
+        brands.push(el.brand)
+      }
+      if (!yearSet.has(el.release_year)) {
+        yearSet.add(el.release_year)
+        years.push(el.release_year)
+      }
+    })
+    years.sort((a, b) => b-a)
+    brands.sort((a, b) => a-b)
+
     dispatch({
       type: PHONE_LIST_FETCHED,
-      payload: list
+      payload: {
+        list,
+        years,
+        brands
+      }
     })
   })
   .catch(err => console.log('err : ' + err));
 }
 
-export const filterPhoneList = (data, filter) => dispatch => {
-  dispatch({type: FILTERING_LIST })
-  let filtered = getFiltered(data, filter)
+export const filterPhoneList = (filter) => dispatch => {
   dispatch({
-    type: LIST_FILTERED,
-    filtered
+    type: FILTERING_LIST,
+    filter
   })
 }
 
-const getFiltered = (data, filter) => {
-  return data.filter(el => {
-    if (filter.year !== '') {
-      if (el.release_year !== filter.year) return false
-    }
-    if (filter.brand !== '') {
-      if (el.Brand !== filter.brand) return false
-    }
-    if (filter.search !== '') {
-      const deviceName = el.name.toLowerCase()
-      const searchWord = filter.search.toLowerCase()
-      if (!deviceName.includes(searchWord)) return false
-    }
-    return true
+export const filteringDone = () => dispatch => {
+  dispatch({
+    type: LIST_FILTERED
   })
 }
