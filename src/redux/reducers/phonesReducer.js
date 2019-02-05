@@ -32,6 +32,7 @@ export default (state = initialState, action) => {
         isFetching: false,
         phoneList: action.payload,
         filteredList: action.payload
+        // filteredList: action.payload.slice(0, 10)
       }
 
     case FILTERING_LIST:

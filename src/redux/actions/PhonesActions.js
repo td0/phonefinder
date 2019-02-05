@@ -48,7 +48,7 @@ const getFiltered = (data, filter) => {
       if (el.Brand !== filter.brand) return false
     }
     if (filter.search !== '') {
-      const deviceName = el.DeviceName.toLowerCase()
+      const deviceName = el.name.toLowerCase()
       const searchWord = filter.search.toLowerCase()
       if (!deviceName.includes(searchWord)) return false
     }

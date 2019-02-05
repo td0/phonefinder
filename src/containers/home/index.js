@@ -3,40 +3,70 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchPhoneList } from '../../redux/actions'
 
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
-import config from '../../config'
+import PhoneSheet from '../../components/PhoneSheet'
 
 class Home extends Component {
   static propTypes = {
-    fetchPhoneList: PropTypes.func.isRequired
+    fetchPhoneList: PropTypes.func.isRequired,
+    list: PropTypes.array
   }
 
   componentDidMount() {
     this.props.fetchPhoneList()
   }
 
+  renderContent () {
+    const { classes, list } = this.props  
+
+    return (
+      list.length !== 0 ? 
+        (<Grid container 
+          spacing={8}
+          className={classes.container}>
+          {list.map(el => (
+            <Grid item
+              xs={6} sm={4} md={3}
+              className={classes.grid}
+              key={el.id} >
+              <PhoneSheet data={el} />
+            </Grid>))}
+        </Grid>) :
+       (<center>
+          <Typography variant='h5'>No Data</Typography>
+        </center>))
+  }
+
   render () {
     const { classes } = this.props
+
     return (
-      <div className={classes.container}>
-        <h1>HOME PAGE</h1>
+      <div className={classes.root}>
+        {this.renderContent()}
       </div>
     )
   }
 } 
 
 const styles = {
+  root: {
+    padding: '120px 10px',
+  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
-    padding: '30px'
+    justifyContent: 'left'
+  },
+  grid: {
   }
 }
 
 const mapStateToProps = ({ phones }) => {
   return {
-    phones
+    list: phones.filteredList
   }
 }
 
