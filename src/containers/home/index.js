@@ -2,6 +2,7 @@ import React,{ Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchPhoneList } from '../../redux/actions'
+import { getFilteredPhones } from '../../redux/selectors'
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography'
@@ -66,9 +67,8 @@ const styles = {
 
 
 const mapStateToProps = ({ phones }) => {
-  const { phoneList } = phones
   return {
-    list: phoneList
+    list: getFilteredPhones(phones)
   }
 }
 
