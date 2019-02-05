@@ -5,6 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
 import Home from '../home'
+import Navbar from '../../components/Navbar'
 
 const theme = createMuiTheme({
   palette: {
@@ -33,6 +34,7 @@ const App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
     <main>
+      <Navbar />
       <div style={styles}>
         <Route exact path='/' component={Home} />
       </div>

@@ -1,7 +1,8 @@
-import React,{ Component, Fragment } from 'react'
+import React,{ Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchPhoneList } from '../../redux/actions'
+
 import { withStyles } from '@material-ui/core/styles'
 
 import config from '../../config'
@@ -34,8 +35,6 @@ const styles = {
 }
 
 const mapStateToProps = ({ phones }) => {
-  console.log(phones)
-
   return {
     phones
   }
