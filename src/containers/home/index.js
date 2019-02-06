@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 
 import PhoneSheet from '../../components/PhoneSheet'
+import FilterBar from '../../components/FilterBar'
 
 class Home extends Component {
   static propTypes = {
@@ -36,7 +37,7 @@ class Home extends Component {
               <PhoneSheet data={el} />
             </Grid>))}
         </Grid>) :
-       (<center>
+       (<center className={classes.center}>
           <Typography variant='h5'>No Data</Typography>
         </center>))
   }
@@ -46,6 +47,7 @@ class Home extends Component {
 
     return (
       <div className={classes.root}>
+        <FilterBar className={classes.filterBar} />
         {this.renderContent()}
       </div>
     )
@@ -54,14 +56,19 @@ class Home extends Component {
 
 const styles = {
   root: {
-    padding: '120px 10px',
+    padding: '30px 10px',
+  },
+  filterBar: {
+    width: '100%',
+    height: 60
+  },
+  center: {
+    marginTop: 120,
   },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'left'
-  },
-  grid: {
   }
 }
 
