@@ -1,56 +1,105 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { isYearFiltered, isBrandFiltered } from '../redux/selectors'
 import { connect } from 'react-redux'
-import { filterPhoneList } from '../redux/actions'
 
 import Grid from '@material-ui/core/Grid'
+import Card from '@material-ui/core/Card'
+import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { withStyles } from '@material-ui/core/styles'
 
-import FilterBox from './FilterBox'
+import FilterModal from './FilterModal'
 
 class FilterBar extends Component {
   static propTypes = {
-    filter: PropTypes.object.isRequired,
-    filterList: PropTypes.object.isRequired,
-    filterPhoneList: PropTypes.func.isRequired
-  }
-
-  state = {
-    yearFilterOpen: false,
-    brandFilterOpen: false
-  }
-
-
-  filterBoxClick = (label) => {
-    if (label === 'Years') {
-      this.setState({
-        yearFilterOpen: true,
-        brandFilterOpen: false
-      })
-    }
+    yearFiltered: PropTypes.bool,
+    brandFiltered: PropTypes.bool
   }
   
-  render() {
-    const { classes } = this.props
+  state = {
+    yearAnchor: null,
+    brandAnchor: null
+  }
 
+  openYearFilter = (e) => {
+    this.setState({
+      yearAnchor: e.currentTarget,
+      brandAnchor: this.state.brandAnchor
+    })
+  }
+
+  openBrandFilter = (e) => {
+    this.setState({
+      yearAnchor: this.state.yearAnchor,
+      brandAnchor: e.currentTarget
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+      yearAnchor: null,
+      brandAnchor: null
+    })
+  }
+
+  renderFilterBox = (label, filtered) => {
+    const { classes } = this.props
+    let anchorEl, openModal
+    if (label === 'Years') {
+      anchorEl = this.state.yearAnchor
+      openModal = this.openYearFilter
+    } else {
+      anchorEl = this.state.brandAnchor
+      openModal = this.openBrandFilter
+    }
+
+    return (
+      <Fragment>
+        <Card className={classes.card}
+          onClick={openModal}>
+          <div className={classes.cardLabel}>
+            <Typography variant='h5'>
+              {label}
+            </Typography>
+            <Typography variant='subtitle1'>
+              {filtered ? 'Filtered' : 'All ' + label}
+            </Typography>
+          </div>
+          <div className={classes.cardAction}>
+            <ExpandMoreIcon className={classes.actionIcon} />
+          </div>
+        </Card>
+        <FilterModal 
+          label={label}
+          anchorEl={anchorEl}
+          filtered={filtered}
+          close={this.closeModal} />
+      </Fragment>
+    )
+  }
+
+  render() {
+    const { classes, yearFiltered, brandFiltered } = this.props
+    console.log(yearFiltered)
     return (
       <Grid container
         className={classes.gridContainer}
         spacing={16} >
         <Grid item
           className={classes.gridItem} >
-          <FilterBox label='Years'filtered={false} clickHandler={this.filterBoxClick} />
+          {this.renderFilterBox('Years', yearFiltered)}
         </Grid>
         <Grid item
           className={classes.gridItem} >
-          <FilterBox label='Brands'filtered={false} clickHandler={this.filterBoxClick} />
+          {this.renderFilterBox('Brands', brandFiltered)}
         </Grid>
       </Grid>
     )
   }
 }
 
-const styles = {
+const styles = theme => ({
   gridContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -58,29 +107,44 @@ const styles = {
     marginBottom: 16
   },
   gridItem: {
-    padding: 0
+    padding: 0,
+    margin: 0
   },
   card: {
     display: 'flex',
     flexDirection: 'row',
-    width: 270,
-    height: 100,
-    padding: 16
+    width: 280,
+    height: 72,
+    padding: '8px 12px',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: "#EEE",
+    }
   },
   cardLabel: {
-    flex: 10,
     flexGrow: 1
+  },
+  cardAction: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: 30,
+    borderLeft: '1px solid #DDD',
+    paddingLeft: 8
+  },
+  actionIcon: {
+    flex: 10,
   }
-}
+})
 
-const mapStateToProps = ({ phones }) => {
+const mapStateToProps = ({phones}) => {
   return {
-    filterList: phones.filterList,
-    filter: phones.filter
+    yearFiltered: isYearFiltered(phones),
+    brandFiltered: isBrandFiltered(phones)
   }
 }
 
 export default connect(
   mapStateToProps,
-  {filterPhoneList}
-) (withStyles(styles)(FilterBar))
+  {}
+)(withStyles(styles)(FilterBar))
