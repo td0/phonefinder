@@ -14,6 +14,8 @@ const filterPhones = (searched, years, brands) => {
   return filtered
 }
 
+const isFiltered = (filter) => filter.length > 0
+
 export const getSearched = createSelector(
   [phoneList, searchFilter],
   (list, search) => {
@@ -36,6 +38,16 @@ export const getBrandSelected = createSelector(
     if (brands.length === 0) return list
     else return list.filter(el => !brands.indexOf(el.brand) > -1)
   }
+)
+
+export const isYearFiltered = createSelector(
+  yearFilters,
+  isFiltered
+)
+
+export const isBrandFiltered = createSelector(
+  brandFilters,
+  isFiltered
 )
 
 export const getFilteredPhones =  createSelector(

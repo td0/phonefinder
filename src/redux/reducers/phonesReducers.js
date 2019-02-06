@@ -15,8 +15,8 @@ const initialState = {
     brands: []
   },
   filterList: {
-    yearList: [],
-    brandList: [],
+    years: [],
+    brands: [],
   },
 }
 

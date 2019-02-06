@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-import phones from './phonesReducer'
+import phones from './phonesReducers'
 
 export default combineReducers({
   phones

@@ -42,22 +42,20 @@ export const filteringDone = () => dispatch => {
 
 const getFilterList = (data) => {
   const brandSet = new Set()
-  const brandList = []
+  const brands = []
   const yearSet = new Set()
-  const yearList = []
+  const years = []
   
   data.forEach(el => {
     if (!yearSet.has(el.release_year)) {
       yearSet.add(el.release_year)
-      yearList.push(el.release_year)
+      years.push(el.release_year)
     }
     if (!brandSet.has(el.brand)) {
       brandSet.add(el.brand)
-      brandList.push(el.brand)
+      brands.push(el.brand)
     }
   })
-  yearList.sort((a, b) => b - a)
-  brandList.sort((a, b) => a - b)
   
-  return { yearList, brandList }
+  return { years, brands }
 }

@@ -1,1 +1,1 @@
-export * from './PhoneSelector'
+export * from './PhoneSelectors'
