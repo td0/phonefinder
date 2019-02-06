@@ -9,13 +9,15 @@ const initialState = {
   isFetching: true,
   isFiltering: false,
   phoneList: [],
-  yearList: [],
-  brandList: [],
   filter: {
     search: '',
     years: [],
     brands: []
-  }
+  },
+  filterList: {
+    yearList: [],
+    brandList: [],
+  },
 }
 
 export default (state = initialState, action) => {
@@ -28,18 +30,12 @@ export default (state = initialState, action) => {
       }
 
     case PHONE_LIST_FETCHED:
-      const { list, years, brands } = action.payload
+      const { phoneList, filterList } = action.payload
       return {
         ...state,
         isFetching: false,
-        phoneList: list,
-        yearList: years,
-        brandList: brands,
-        filter : {
-          ...state.filter,
-          years,
-          brands
-        }
+        phoneList,
+        filterList
       }
 
     case FILTERING_LIST:
