@@ -1,6 +1,6 @@
-# Tokoflix
+# Phone Finder
 
-The demo page can be accessed [here](https://tokoflix.now.sh/)
+The demo page can be accessed [here](https://phonefinder.now.sh/)
 
 ## Requirements :
 * nodeJS >v8
