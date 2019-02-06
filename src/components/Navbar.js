@@ -18,12 +18,16 @@ class Navbar extends Component {
   }
 
   state = {
-    searchWord: ''
+    search: ''
   }
 
   handleSearch = () => {
-    console.log('search word entered')
-    console.log(this.state.searchWord)
+    const { filter, filterPhoneList } = this.props
+    if (filter.search !== this.state.search)
+      filterPhoneList({
+        ...filter, 
+        search: this.state.search
+      })
   }
 
   handleOnChange = (e) => {
@@ -32,9 +36,7 @@ class Navbar extends Component {
   }
 
   handleEnter = (e) => {
-    if (e.key === 'Enter') {
-      this.handleSearch()
-    }
+    if (e.key === 'Enter') this.handleSearch()
   }
 
   render() {
@@ -47,13 +49,13 @@ class Navbar extends Component {
 
             <div className={classes.search}>
               <InputBase
-                name='searchWord'
+                name='search'
                 placeholder="Search…"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
-                value={this.state.searchWord}
+                value={this.state.search}
                 onChange={this.handleOnChange}
                 onKeyPress={this.handleEnter}
               />
@@ -129,8 +131,13 @@ const styles = theme => ({
   },
 })
 
+const mapStateToProps = ({ phones }) => {
+  return {
+    filter: phones.filter
+  }
+}
 
 export default connect(
-  null,
+  mapStateToProps,
   { filterPhoneList } 
 )(withStyles(styles)(Navbar))
