@@ -10,11 +10,13 @@ import { withStyles } from '@material-ui/core/styles'
 
 import PhoneSheet from '../../components/PhoneSheet'
 import FilterBar from '../../components/FilterBar'
+import ProgressSpinner from '../../components/ProgressSpinner'
 
 class Home extends Component {
   static propTypes = {
     fetchPhoneList: PropTypes.func.isRequired,
-    list: PropTypes.array
+    list: PropTypes.array,
+    isFetching: PropTypes.bool,
   }
 
   componentDidMount() {
@@ -22,9 +24,9 @@ class Home extends Component {
   }
 
   renderContent () {
-    const { classes, list } = this.props  
+    const { classes, list, isFetching } = this.props  
 
-    return (
+    return !isFetching ? (
       list.length !== 0 ? 
         (<Grid container 
           spacing={8}
@@ -39,7 +41,8 @@ class Home extends Component {
         </Grid>) :
        (<center className={classes.center}>
           <Typography variant='h5'>No Data</Typography>
-        </center>))
+        </center>)) :
+      (<ProgressSpinner />)
   }
 
   render () {
@@ -75,7 +78,8 @@ const styles = {
 
 const mapStateToProps = ({ phones }) => {
   return {
-    list: getFilteredPhones(phones)
+    list: getFilteredPhones(phones),
+    isFetching: phones.isFetching
   }
 }
 
