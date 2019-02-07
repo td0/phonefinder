@@ -81,7 +81,6 @@ class FilterBar extends Component {
 
   render() {
     const { classes, yearFiltered, brandFiltered } = this.props
-    console.log(yearFiltered)
     return (
       <Grid container
         className={classes.gridContainer}

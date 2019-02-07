@@ -34,13 +34,7 @@ class FilterModal extends Component {
   handleClose = () => {
     this.props.close()
   }
-
-  renderFilterItems () {
-    return (<div>
-
-    </div>)
-  }
-
+  
   renderCheckBox () {
     const { 
       classes,
